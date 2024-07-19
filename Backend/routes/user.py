@@ -40,7 +40,7 @@ def read_user(id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-@user.post('/users/', response_model=schemas.users.User,tags=['Usuarios'],dependencies=[Depends(Portador())])
+@user.post('/users/', response_model=schemas.users.User,tags=['Usuarios'])
 def create_user(user: schemas.users.UserCreate, db: Session=Depends(get_db)):
     db_users = crud.users.get_user_by_usuario(db,usuario=user.Nombre_Usuario)
     if db_users:
