@@ -44,7 +44,7 @@ def update_schedule(id:int,schedule: schemas.schedules.ScheduleUpdate, db: Sessi
     db_schedules = crud.schedules.update_schedule(db=db, id=id, schedule=schedule)
     if db_schedules is None:
         raise HTTPException(status_code=404, detail="Horario no existe, no se pudo actualizar ")
-    return db_schedule
+    return db_schedules
 
 
 @schedule.delete('/schedules/{id}', response_model=schemas.schedules.Schedule,tags=['Horarios'])
@@ -52,4 +52,4 @@ def delete_schedule(id:int, db: Session=Depends(get_db)):
     db_schedules = crud.schedules.delete_schedule(db=db, id=id)
     if db_schedules is None:
         raise HTTPException(status_code=404, detail="Horario no existe, no se pudo eliminar ")
-    return db_schedule
+    return db_schedules
