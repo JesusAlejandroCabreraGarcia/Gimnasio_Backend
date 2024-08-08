@@ -7,6 +7,7 @@ from routes.schedule import schedule
 from routes.area import area
 from routes.puestos import puesto
 from routes.empleados import empleado
+from routes.servicios_clientes import servicio_cliente
 
 app = FastAPI()
 app.include_router(user)
@@ -17,4 +18,6 @@ app.include_router(schedule)
 app.include_router(area)
 app.include_router(puesto)
 app.include_router(empleado)
+app.include_router(servicio_cliente)
+
 print("Hola bienvenido a mi backend")
