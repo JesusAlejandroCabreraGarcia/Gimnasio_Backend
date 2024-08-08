@@ -1,5 +1,6 @@
 from fastapi import APIRouter,HTTPException, Depends
 from sqlalchemy.orm import Session
+from portadortoken import Portador
 from cryptography.fernet import Fernet
 import crud.rols, config.db, schemas.rols, models.rols
 from typing import List
@@ -18,12 +19,12 @@ def get_db():
         db.close()
 
 
-@rol.get('/rols/', response_model=List[schemas.rols.Rol],tags=['Roles'])
+@rol.get('/rols/', response_model=List[schemas.rols.Rol],tags=['Roles'],dependencies=[Depends(Portador())])
 def read_rols(skip: int=0, limit: int=10, db: Session=Depends(get_db)):
     db_rols = crud.rols.get_rols(db=db,skip=skip, limit=limit)
     return db_rols
 
-@rol.post("/rol/{id}", response_model=schemas.rols.Rol, tags=["Roles"])
+@rol.post("/rol/{id}", response_model=schemas.rols.Rol, tags=["Roles"],dependencies=[Depends(Portador())])
 def read_rol(id: int, db: Session = Depends(get_db)):
     db_rol= crud.rols.get_rol(db=db, id=id)
     if db_rol is None:
@@ -39,14 +40,14 @@ def create_rol(rol: schemas.rols.RolCreate, db: Session=Depends(get_db)):
     return crud.rols.create_rol(db=db, rol=rol)
 
 
-@rol.put('/rols/{id}', response_model=schemas.rols.Rol,tags=['Roles'])
+@rol.put('/rols/{id}', response_model=schemas.rols.Rol,tags=['Roles'],dependencies=[Depends(Portador())])
 def update_rol(id:int,rol: schemas.rols.RolUpdate, db: Session=Depends(get_db)):
     db_rols = crud.rols.update_rol(db=db, id=id, rol=rol)
     if db_rols is None:
         raise HTTPException(status_code=404, detail="Rol no existe, no se pudo actualizar ")
     return db_rols
 
-@rol.delete('/rols/{id}', response_model=schemas.rols.Rol,tags=['Roles'])
+@rol.delete('/rols/{id}', response_model=schemas.rols.Rol,tags=['Roles'],dependencies=[Depends(Portador())])
 def delete_rol(id:int, db: Session=Depends(get_db)):
     db_rols = crud.rols.delete_rol(db=db, id=id)
     if db_rols is None:

@@ -1,6 +1,7 @@
 from sqlalchemy import Column,Boolean, Integer, String, DateTime, ForeignKey, Enum
 from sqlalchemy.dialects.mysql import LONGTEXT
 from sqlalchemy.orm import relationship
+
 from config.db import Base
 import enum
 

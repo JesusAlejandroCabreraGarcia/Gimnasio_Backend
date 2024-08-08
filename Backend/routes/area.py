@@ -2,6 +2,7 @@ from fastapi import APIRouter,HTTPException, Depends
 from sqlalchemy.orm import Session
 from cryptography.fernet import Fernet
 import crud.areas, config.db, schemas.areas, models.areas
+from portadortoken import Portador
 from typing import List
 
 key = Fernet.generate_key()
@@ -18,12 +19,12 @@ def get_db():
         db.close()
 
 
-@area.get('/areas/', response_model=List[schemas.areas.Area],tags=['Areas'])
+@area.get('/areas/', response_model=List[schemas.areas.Area],tags=['Areas'],dependencies=[Depends(Portador())])
 def read_areas(skip: int=0, limit: int=10, db: Session=Depends(get_db)):
     db_areas = crud.areas.get_areas(db=db,skip=skip, limit=limit)
     return db_areas
 
-@area.post("/area/{id}", response_model=schemas.areas.Area, tags=["Areas"])
+@area.post("/area/{id}", response_model=schemas.areas.Area, tags=["Areas"],dependencies=[Depends(Portador())])
 def read_area(id: int, db: Session = Depends(get_db)):
     db_area= crud.areas.get_area(db=db, id=id)
     if db_area is None:
@@ -39,7 +40,7 @@ def create_area(area: schemas.areas.AreaCreate, db: Session=Depends(get_db)):
     return crud.areas.create_area(db=db, area=area)
 
 
-@area.put('/areas/{id}', response_model=schemas.areas.Area,tags=['Areas'])
+@area.put('/areas/{id}', response_model=schemas.areas.Area,tags=['Areas'],dependencies=[Depends(Portador())])
 def update_area(id:int,area: schemas.areas.AreaUpdate, db: Session=Depends(get_db)):
     db_areas = crud.areas.update_area(db=db, id=id, area=area)
     if db_areas is None:
@@ -47,7 +48,7 @@ def update_area(id:int,area: schemas.areas.AreaUpdate, db: Session=Depends(get_d
     return db_areas
 
 
-@area.delete('/areas/{id}', response_model=schemas.areas.Area,tags=['Areas'])
+@area.delete('/areas/{id}', response_model=schemas.areas.Area,tags=['Areas'],dependencies=[Depends(Portador())])
 def delete_area(id:int, db: Session=Depends(get_db)):
     db_areas = crud.areas.delete_area(db=db, id=id)
     if db_areas is None:

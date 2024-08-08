@@ -1,6 +1,7 @@
 from fastapi import APIRouter,HTTPException, Depends
 from sqlalchemy.orm import Session
 from cryptography.fernet import Fernet
+from portadortoken import Portador
 import crud.persons, config.db, schemas.persons, models.persons
 from typing import List
 
@@ -18,12 +19,12 @@ def get_db():
         db.close()
 
 
-@person.get('/persons/', response_model=List[schemas.persons.Person],tags=['Personas'])
+@person.get('/persons/', response_model=List[schemas.persons.Person],tags=['Personas'],dependencies=[Depends(Portador())])
 def read_persons(skip: int=0, limit: int=10, db: Session=Depends(get_db)):
     db_persons = crud.persons.get_persons(db=db,skip=skip, limit=limit)
     return db_persons
 
-@person.post("/person/{id}", response_model=schemas.persons.Person, tags=["Personas"])
+@person.post("/person/{id}", response_model=schemas.persons.Person, tags=["Personas"],dependencies=[Depends(Portador())])
 def read_person(id: int, db: Session = Depends(get_db)):
     db_person= crud.persons.get_person(db=db, id=id)
     if db_person is None:
@@ -39,7 +40,7 @@ def create_person(person: schemas.persons.PersonCreate, db: Session=Depends(get_
     return crud.persons.create_person(db=db, person=person)
 
 
-@person.put('/persons/{id}', response_model=schemas.persons.Person,tags=['Personas'])
+@person.put('/persons/{id}', response_model=schemas.persons.Person,tags=['Personas'],dependencies=[Depends(Portador())])
 def update_person(id:int,person: schemas.persons.PersonUpdate, db: Session=Depends(get_db)):
     db_persons = crud.persons.update_person(db=db, id=id, person=person)
     if db_persons is None:
@@ -47,7 +48,7 @@ def update_person(id:int,person: schemas.persons.PersonUpdate, db: Session=Depen
     return db_persons
 
 
-@person.delete('/persons/{id}', response_model=schemas.persons.Person,tags=['Personas'])
+@person.delete('/persons/{id}', response_model=schemas.persons.Person,tags=['Personas'],dependencies=[Depends(Portador())])
 def delete_person(id:int, db: Session=Depends(get_db)):
     db_persons = crud.persons.delete_person(db=db, id=id)
     if db_persons is None:
