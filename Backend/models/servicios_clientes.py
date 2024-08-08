@@ -13,7 +13,7 @@ class Servicio_Cliente(Base):
     __tablename__ = "tbc_servicios_clientes"
     
     ID = Column(Integer, primary_key=True, index=True)
-    Persona_ID = Column(String(100))
+    Persona_ID = Column(Integer, ForeignKey("tbb_personas.ID"))
     Tipo_Servicio = Column(Enum(MyTipo))
     Descripcion = Column(String(255)) 
     Comentarios = Column(String(200))    
