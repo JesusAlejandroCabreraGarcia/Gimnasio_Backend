@@ -39,7 +39,7 @@ def create_empleado(empleado: schemas.empleados.EmpleadoCreate, db: Session = De
 
 @empleado.put("/empleado/{ID}", response_model=schemas.empleados.Empleado, tags=["Empleados"] ,dependencies=[Depends(Portador())])
 def update_empleado(ID: int, empleado: schemas.empleados.EmpleadoUpdate, db: Session = Depends(get_db)):
-    db_empleados = crud.puestos.update_puesto(db = db, ID = ID, puesto = puesto)
+    db_empleados = crud.empleados.update_empleado(db = db, ID = ID, empleado = empleado)
     if db_empleados is None:
         raise HTTPException(status_code=404, detail="Empleado no existente, no esta actuaizado")
     return db_empleados

@@ -14,4 +14,4 @@ class Area(Base):
     Fecha_Registro = Column(DateTime)
     Fecha_Actualizacion = Column(DateTime)
     # Id_persona = Column(Integer)
-    # intems = relationship("Item", back_populates="owner") Clave foranea
+    # intems = relationship("Item", back_populates="owner") Clave foranea   

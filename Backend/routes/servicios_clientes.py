@@ -17,7 +17,7 @@ def get_db():
 
 @servicio_cliente.get("/servicios_clientes/", response_model=List[schemas.servicios_clientes.Servicio_Cliente], tags=["Servicios_Clientes"] ,dependencies=[Depends(Portador())])
 def read_servicios_clientes(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    db_servicios_clientes= crud.servicios_clientes.get_servicio_cliente(db=db, skip=skip, limit=limit)
+    db_servicios_clientes= crud.servicios_clientes.get_servicios_clientes(db=db, skip=skip, limit=limit)
     return db_servicios_clientes
 
 @servicio_cliente.post("/servicio_cliente/{ID}", response_model=schemas.servicios_clientes.Servicio_Cliente, tags=["Servicios_Clientes"] ,dependencies=[Depends(Portador())])
